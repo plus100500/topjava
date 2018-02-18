@@ -38,13 +38,8 @@ public class UserMealsUtil {
         // get Map of sum calories per day
         Map<LocalDate, Integer> caloriesMapPerDay = mealList.stream().collect(Collectors.toMap(obj->obj.getDateTime().toLocalDate(), obj->obj.getCalories(),(val1, val2)->(val1+val2)));
 
-        // get filtered List of UserMeals
-        List<UserMeal> userMealList = mealList.stream().filter(userMeal -> TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(),startTime,endTime)).collect(Collectors.toList());
-
-        // get List of UserMealWithExceed (i can't create it...)
-        List<UserMealWithExceed> userMealWithExceedList = userMealList.stream().
-                filter(userMeal -> TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(),startTime,endTime)).
-                collect(Collectors.toList((v)->(new UserMealWithExceed(v.getDateTime(),v.getDescription(),v.getCalories(),caloriesMapPerDay.get(v.getDateTime().toLocalDate()) > caloriesPerDay))));
+        // get filtered List of userMealWithExceedList
+        List<UserMealWithExceed> userMealWithExceedList =  mealList.stream().filter(userMeal -> TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(),startTime,endTime)).map((v)->(new UserMealWithExceed(v.getDateTime(),v.getDescription(),v.getCalories(),caloriesMapPerDay.get(v.getDateTime().toLocalDate()) > caloriesPerDay))).collect(Collectors.toList());
 
         return userMealWithExceedList;
     }
