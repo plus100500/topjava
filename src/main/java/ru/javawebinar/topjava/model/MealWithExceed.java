@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MealWithExceed {
 
@@ -51,10 +50,5 @@ public class MealWithExceed {
 
     public boolean isExceed() {
         return exceed;
-    }
-
-    public String getDateTimeCustom() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return dateTime.format(formatter);
     }
 }

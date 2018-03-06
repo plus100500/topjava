@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 public class MealsUtil {
 
     public static void main(String[] args) {
-        List<Meal> meals = DataBase.meals;
+        List<Meal> meals = DataBase.getMeals();
 
         List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsWithExceeded.forEach(System.out::println);
@@ -102,7 +102,7 @@ public class MealsUtil {
 
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
 
-        List<Meal> meals = DataBase.meals;
+        List<Meal> meals = DataBase.getMeals();
         return new MealWithExceed(meal.getId(),meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
 }

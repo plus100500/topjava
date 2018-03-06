@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
+
+<html>
 <%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>--%>
 <html>
 <head>
@@ -45,7 +47,7 @@
                 <c:out value="${mealWithExceed.id}" />
             </td>
             <td>
-                <c:out value="${mealWithExceed.dateTimeCustom}" />
+                <javatime:format value="${mealWithExceed.dateTime}" style="MS" />
             </td>
             <td>
                 <c:out value="${mealWithExceed.description}" />
@@ -83,10 +85,10 @@
     Calories : <input type="text" name="calories" value="<c:out value="${meal.calories}"/>" />
     <br />
         <c:if test="${empty meal.id}">
-            Submit : <input type="submit" name="submit" value="Добавить"/>
+            Submit : <input type="submit" name="submit" value="Add"/>
         </c:if>
         <c:if test="${!empty meal.id}">
-            Submit : <input type="submit" name="submit" value="Обновить"/>
+            Submit : <input type="submit" name="submit" value="Update"/>
         </c:if>
 
 </form>

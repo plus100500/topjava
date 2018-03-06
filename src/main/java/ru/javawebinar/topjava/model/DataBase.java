@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DataBase {
-    public static volatile CopyOnWriteArrayList meals;
+    private static CopyOnWriteArrayList meals;
     public static int calories;
 
     static {
@@ -19,5 +19,9 @@ public class DataBase {
                 new Meal(6, LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
         ));
         calories = 2000;
+    }
+
+    public static CopyOnWriteArrayList getMeals() {
+        return meals;
     }
 }

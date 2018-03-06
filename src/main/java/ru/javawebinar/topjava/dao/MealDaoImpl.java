@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.dao;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.DataBase;
 import ru.javawebinar.topjava.model.Meal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,31 +14,29 @@ public class MealDaoImpl implements MealDao {
     private static final Logger log = getLogger(MealDaoImpl.class);
 
     @Override
-    public void addMeal(Meal meal) {
-        DataBase.meals.add(meal);
+    public void add(Meal meal) {
+        DataBase.getMeals().add(meal);
         log.info("Meal " + meal + " successfully added");
     }
 
     @Override
-    public void updateMeal(int id, LocalDateTime localDateTime, String description, int calories) {
-        Meal meal = getMealById(id);
-        getListMeals().remove(meal);
-        meal = new Meal(id,localDateTime,description,calories);
-        getListMeals().add(meal);
+    public void update(Meal meal) {
+        getList().remove(getById(meal.getId()));
+        getList().add(meal);
         log.info("Meal " + meal + " successfully updated");
     }
 
     @Override
-    public void removeMeal(int id) {
-        Meal meal = getMealById(id);
-        DataBase.meals.remove(meal);
+    public void remove(int id) {
+        Meal meal = getById(id);
+        DataBase.getMeals().remove(meal);
         log.info("Meal " + meal + " successfully removed");
     }
 
     @Override
-    public Meal getMealById(int id) {
+    public Meal getById(int id) {
         Meal meal = null;
-        for(Meal mealFor : getListMeals()) {
+        for(Meal mealFor : getList()) {
             if (mealFor.getId() == id) meal = mealFor;
         }
 
@@ -52,9 +49,9 @@ public class MealDaoImpl implements MealDao {
     }
 
     @Override
-    public List<Meal> getListMealById(int id) {
+    public List<Meal> getListById(int id) {
         Meal meal = null;
-        for(Meal mealFor : getListMeals()) {
+        for(Meal mealFor : getList()) {
             if (mealFor.getId() == id) meal = mealFor;
         }
 
@@ -69,12 +66,12 @@ public class MealDaoImpl implements MealDao {
     }
 
     @Override
-    public List<Meal> getListMeals() {
-        return DataBase.meals;
+    public List<Meal> getList() {
+        return DataBase.getMeals();
     }
 
     @Override
     public int getId() {
-        return DataBase.meals.size()+1;
+        return DataBase.getMeals().size()+1;
     }
 }
