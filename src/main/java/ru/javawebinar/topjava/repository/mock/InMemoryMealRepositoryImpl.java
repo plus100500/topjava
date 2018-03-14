@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Repository()
 public class InMemoryMealRepositoryImpl implements MealRepository {
@@ -21,11 +24,12 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.MEALS.forEach(this::save);
+        for (Meal MEAL : MealsUtil.MEALS) save(MEAL, MEAL.getUserId());
     }
 
     @Override
-    public Meal save(Meal meal) {
+    public Meal save(Meal meal, int userId) {
+        if (meal.getUserId() != userId) return null;
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
@@ -36,23 +40,28 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id, int userId) {
+        Meal meal = repository.get(id);
+        if (meal == null || meal.getUserId() != userId) return false;
         log.info("delete {}", id);
         return repository.remove(id) != null;
     }
 
     @Override
-    public Meal get(int id) {
+    public Meal get(int id, int userId) {
+        Meal meal = repository.get(id);
+        if (meal == null || meal.getUserId() != userId) return null;
         log.info("get {}", id);
         return repository.get(id);
     }
 
 
-
     @Override
-    public List<Meal> getAll() {
+    public List<Meal> getAll(int userId) {
         log.info("getAll {}");
-        return new ArrayList<>(repository.values());
+        return new ArrayList<>(repository.values().stream()
+                .filter(meal -> meal.getUserId() == userId)
+                .collect(toList()));
     }
 }
 

@@ -24,7 +24,7 @@ public class MealsUtil {
 
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
-    public static List<MealWithExceed> getWithExceeded(Collection<Meal> meals, int caloriesPerDay, Integer userId) {
+    public static List<MealWithExceed> getWithExceeded(Collection<Meal> meals, int caloriesPerDay, int userId) {
         return getFilteredWithExceeded(meals, caloriesPerDay, meal -> meal.getUserId() == userId);
     }
 
@@ -43,12 +43,7 @@ public class MealsUtil {
         return meals.stream()
                 .filter(filter)
                 .map(meal -> createWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
-                .sorted(new Comparator<MealWithExceed>() {
-                    @Override
-                    public int compare(MealWithExceed o1, MealWithExceed o2) {
-                        return (int) (o2.getDateTime().toEpochSecond(ZoneOffset.UTC) - o1.getDateTime().toEpochSecond(ZoneOffset.UTC));
-                    }
-                })
+                .sorted(Comparator.comparing(MealWithExceed::getDateTime).reversed())
                 .collect(toList());
     }
 
